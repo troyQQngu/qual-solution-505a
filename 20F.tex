@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[]{amsthm} %lets us use \begin{proof}
+\usepackage[]{amssymb} %gives us the character \varnothing
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+
+\title{MATH 505a Fall 2020 Qual Solution Attempts}
+\author{Troy Tao}
+\date\today
+
+\begin{document}
+\maketitle 
+Contact \textcolor{blue}{yntao@usc.edu} if you think this document needs revision.
+
+\section*{Problem 1}
+Let $X_n$ have binomial $B(n,p)$ distribution.
+\subsection*{(a)}
+Find $\E(\frac{1}{X_n+1})$. Simplify your answer so it does not involve a sum to $n$, $n+1$, etc.\\\\
+\color{blue}
+\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        \E\left(\frac{1}{X_n+1}\right) &=\sum_{k=0}^n \frac{1}{k+1} {n \choose k} p^k(1-p)^{n-k}\\
+            &=\sum_{k=0}^n\frac{n!}{(n-k)!(k+1)!}p^k(1-p)^{n-k}\\
+            &=\sum_{k=0}^n\frac{(n+1)!}{(n-k)!(k+1)!}\frac{1}{n+1} p^{k+1}(1-p)^{n-k} \frac{1}{p}\\
+            &=\frac{1}{(n+1)p}\sum_{k=1}^{n+1}{n+1 \choose k}p^k(1-p)^{n+1-k}\\
+            &=\frac{1}{(n+1)p}\left(1-(1-p)^{n+1}\right)
+    \end{split}
+\end{equation*}
+\color{black}
+\subsection*{(b)}
+Suppose $p=p_n$ and $np_n \rightarrow \lambda$ as $n\rightarrow\infty$, with $\lambda \in (0,\infty)$. Find $\lim_n\E(\frac{1}{X_n+1})$. Is it the same as $\lim_n\frac{1}{\E(X_n+1)}$?\\\\
+\color{blue}
+\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        \lim_n\E\left(\frac{1}{X_n+1}\right) &= \lim_n\frac{1-(1-p)^{n+1}}{(n+1)p}\\
+            &= \frac{1}{\lambda}\left(1-\lim_n\left(1-\frac{np}{n}\right)^{n+1}\right)\\
+            &= \frac{1-e^{-\lambda}}{\lambda}
+    \end{split}
+\end{equation*}
+It is not same as $\lim_n \frac{1}{\E(X_n+1)} = \frac{1}{\lambda+1}$.
+\color{black}
+\section*{Problem 2}
+Let $X,Y$ be independent with $X \sim Poisson(\lambda)$ and $Y \sim Poisson(\mu)$ distribution.
+\subsection*{(a)}
+Find $\prob(X=k|X+Y=n)$ for $ 0\leq k \leq n$. Simplify your answer so it does not involve a sum. Do the actual calculation, don't just cite a theorem.\\\\
+\color{blue}
+\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        \prob(X=k|X+Y=n) &= \frac{\prob(X=k,Y=n-k)}{\sum_{l=0}^{n}\prob(X=l,Y=n-\l)}\\
+            &= \frac{e^{-\lambda}\frac{\lambda^k}{k!}e^{-\mu}\frac{\mu^{n-k}}{(n-k)!}}{\sum_{l=0}^ne^{-\lambda}\frac{\lambda^l}{l!}e^{-\mu}\frac{\mu^{n-l}}{(n-l)!}}\\
+            &= \frac{{n \choose k}\left(\frac{\lambda}{\lambda+\mu}\right)^k\left(\frac{\mu}{\lambda+\mu}\right)^{n-k}}{\sum_{l=0}^n{n \choose l} \left(\frac{\lambda}{\lambda+\mu}\right)^l \left( \frac{\mu}{\lambda+\mu} \right) ^{n-l}} \\
+            &= {n \choose k}\left(\frac{\lambda}{\lambda+\mu}\right)^k\left(\frac{\mu}{\lambda+\mu}\right)^{n-k}
+    \end{split}
+\end{equation*}
+\color{black}
+\subsection*{(b)}
+Find $\E(X^2+Y^2|X+Y=n)$.\\\\
+\color{blue}
+\textit{Solution. }
+\begin{equation*}
+\begin{split}
+    \E(X^2+Y^2|X+Y=n) &= \sum_{k=0}^n(k^2+(n-k)^2){n \choose k} \left(\frac{\lambda}{\lambda+\mu}\right)^k\left(\frac{\mu}{\lambda+\mu}\right)^{n-k}\\
+        &=\E(M^2)+\E((n-M)^2)
+\end{split}
+\end{equation*}
+where $M \sim Binomial(n,\frac{\lambda}{\lambda+\mu})$. Given that $\E(M) = \frac{n\lambda}{\lambda+\mu}$ and $Var(M) = \frac{n\lambda \mu}{(\lambda+\mu)^2}$, we have:
+\begin{equation*}
+    \begin{split}
+        \E(X^2+Y^2|X+Y=n) &= 2\left(\frac{n\lambda \mu}{(\lambda+\mu)^2}+\left(\frac{n\lambda}{\lambda+\mu}\right)^2\right)+n^2-\frac{2\lambda n^2}{\lambda+\mu}
+    \end{split}
+\end{equation*}
+\color{black}
+\section*{Problem 3}
+The county hospital is located at the center of a square whose sides are 2 miles wide. If an accident occurs within this square, then the hospital sends out an ambulance. The road network is rectangular, so the travel distance from the hospital, at $(0,0)$, to the point $(x,y)$ is $|x|+|y|$. If an accident occurs at a point that is uniformly distributed in the square, find the mean and variance of the travel distance of the ambulance.\\\\
+\color{blue}
+\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        \E(|X|+|Y|) &= \int_{-1}^1\int_{-1}^1(|x|+|y|)\cdot \frac{1}{4} dxdy\\
+        &\stackrel{(*)}{=}\int_0^1\int_0^1(x+y)dxdy\\
+        &= 1
+    \end{split}
+\end{equation*}
+$(*)$ by symmetry.
+
+\begin{equation*}
+    \begin{split}
+        Var(|X|+|Y|) &= \E((|X|+|Y|)^2)-(\E(|X|+|Y|))^2\\
+            &= \int_0^1\int_0^1(x+y)^2dxdy -1\\
+            &= \frac{7}{6} - 1\\
+            &=\frac{1}{6}
+    \end{split}
+\end{equation*}
+\color{black}
+\section*{Problem 4}
+Let $X$ be a finite set $X$, and let $P$ and $Q$ be probabilities on $X$. Define the total variation distance between $P$ and $Q$ by 
+\begin{equation*}
+    ||P-Q||_{TV} = \frac{1}{2}\sum_{x \in X} |P(x)-Q(x)|.
+\end{equation*}
+Prove that
+\begin{equation*}
+    ||P-Q||_{TV} = \max_{A \subset X}|P(A)-Q(A)|,
+\end{equation*}
+where the maximum is over subsets $A$ of $X$.
+\color{blue}
+\begin{proof}
+    Let $S=\{x\in X: P(X)\geq Q(x)\}$, then, 
+    \begin{equation*}
+        \begin{split}
+            ||P-Q||_{TV} &= \frac{1}{2}\left(\sum_{x\in S}(P(x)-Q(x))+\sum_{x\in S^c}(Q(x)-P(x))\right)\\
+                &=\frac{1}{2}\left(P(S)-Q(S)+Q(S^c)-P(S^c)\right)\\
+                &\stackrel{(*)}{=}P(S)-Q(S)\\
+        \end{split}
+    \end{equation*}
+    $(*)$ for any $A\subset X$,
+    $$P(A)+P(A^c)=Q(A)+Q(A^c) = 1 \implies P(A)-Q(A)=Q(A^c)-P(A^c)$$
+    Now it suffices to show that $\max_{A \subset X}|P(A)-Q(A)| = P(S)-Q(S)$. Given $A \subset X$,
+    \begin{equation*}
+        \begin{split}
+            |P(A)-Q(A)| &= |(P(A\cap S)+ P(A \cap S^c)) - (Q(A \cap S)+Q(A \cap S^c))|\\
+            &= |(P(A\cap S)-Q(A \cap S))- (Q(A \cap S^c)- P(A \cap S^c))|\\
+            &\stackrel{(**)}{\leq} \max\{P(A\cap S)-Q(A \cap S),Q(A \cap S^c)- P(A \cap S^c)\}\\
+            &\stackrel{(***)}{\leq} \max\{P(S)-Q(S),Q(S^c)-P(S^c)\}\\
+            &\stackrel{(*)}{=}P(S)-Q(S)
+        \end{split}
+    \end{equation*}
+    $(**)$ $P(A\cap S)-Q(A \cap S)\geq 0$, $Q(A \cap S^c)- P(A \cap S^c)\geq0$ by the definition of $S$.\\
+    $(***)$ Any subset $B\subset S$, $0\leq P(B)-Q(B)\leq P(S)-Q(S)$, by the definition of $S$. Similarly, any $C \subset S^c$, $0\leq Q(C)-P(C) \leq Q(S^c)-P(S^c)$.
+\end{proof}
+\end{document}
