@@ -1,0 +1,156 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[]{amsthm} %lets us use \begin{proof}
+\usepackage[]{amssymb} %gives us the character \varnothing
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\sol}{\\\\\textit{Solution. }}
+\def\beq#1\eeq{%
+    \begin{equation*}\begin{split}%
+      #1%  
+    \end{split}\end{equation*}%
+}
+
+\title{MATH 505a Fall 2018 Qual Solution Attempts}
+\author{Troy Tao}
+\date\today
+
+\begin{document}
+\maketitle 
+Contact \textcolor{blue}{yntao@usc.edu} if you think this document needs revision.
+
+
+\section*{Problem 1}
+Let $X$ be exponentially distributed random variable with $\prob(X>t)=e^{-rt}$ for $t>0$. Write $X$ as the sum of its integer and fractional parts: $X=Y+Z$ with $Y=\lfloor X \rfloor \in \mathbb{Z}$ and $Z \in [0,1)$.
+\subsection*{(a)}
+Find $\E(X)$
+\color{blue}
+\\\\\textit{Solution. }Since X only takes non-negative value,
+$$\E(X) = \int_0^\infty e^{rt}dt = \frac{1}{r}$$
+\color{black}
+\subsection*{(b)}
+Find $\prob(Y=n),\ n=0,1,2,...$
+\color{blue}
+\\\\\textit{Solution. }
+$$\prob(Y=n) = \prob(n\leq X <n+1) = e^{-rn}-e^{-r(n+1)}$$
+\color{black}
+\subsection*{(c)}
+Find $\E(Y)$ and $\E(Z)$.
+\color{blue}
+\\\\\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        \E(Y) &= \sum_{n=1}^\infty\prob(Y\geq n)\\
+        &= \sum_{n=1}^\infty e^{rn}\\
+        &= \frac{e^{-r}}{1-e^{-r}}
+    \end{split}
+\end{equation*}
+$$\E(Z) = \E(X-Y) = \E(X)-\E(Y)=\frac{1}{r}-\frac{e^{-r}}{1-e^{-r}}$$
+\color{black}
+\subsection*{(d)}
+Show that $Y$ and $Z$ are independent.
+\color{blue}
+\begin{proof}
+It suffices to show that $\prob(Y=n \vert Z=a) = \prob(Y=n),\  \forall n $. 
+\begin{equation*}
+    \begin{split}
+        \prob(Y=n \vert Z=a) &= \frac{\prob(X=n+a)}{\sum_{i=0}^\infty\prob(X=i+a)}\\
+        &= \frac{re^{-r(n+a)}}{\sum_{i=0}^\infty re^{-r(n+i)}}\\
+        &= e^{-rn}\cdot (1-e^{-r})\\
+        &= e^{-rn}-e^{-r(n+1)}\\
+        &= \prob(Y=n)
+    \end{split}
+\end{equation*}
+\end{proof}
+\color{black}
+\section*{Problem 2}
+Let $f$ and $g$ be bounded nondecreasing functions on $\mathbb{R}$, and let $X,Y$ be independent and identically distributed random variables.
+\subsection*{(a)}
+Show that 
+$$\E[\left(f(X)-f(Y)\right)\left(g(X)-g(Y)\right)] \geq 0$$
+\color{blue}
+\begin{proof}
+By the nondecreasing monotonicity,
+$$\prob(f(X)-f(Y)\geq 0 \vert X>Y) = \prob(g(X)-g(Y)\geq 0\vert X>Y) =1$$
+$$\prob(f(X)-f(Y)\leq 0 \vert X\leq Y) =\prob(g(X)-g(Y)\leq 0 \vert X\leq Y) =1$$
+So we can argue that,
+\begin{equation*}
+\begin{split}
+    \prob(\left(f(X)-f(Y)\right)\left(g(X)-g(Y)\right)\geq0) &= \prob(\left(f(X)-f(Y)\right)\left(g(X)-g(Y)\right)\geq0\vert X>Y)\prob(X>Y)\\
+    &\ \ \ +\prob(\left(f(X)-f(Y)\right)\left(g(X)-g(Y)\right)\geq0\vert X\leq Y)\prob(X\leq Y)\\
+    &=1
+\end{split}
+\end{equation*}
+Therefore, it follows that
+$$\E[\left(f(X)-f(Y)\right)\left(g(X)-g(Y)\right)] \geq 0$$
+\end{proof}
+\color{black}
+\subsection*{(b)}
+Show that $f(X)$ and $g(X)$ are positively correlated, that is,
+$$\E[f(X)g(X)]\geq\E[f(X)]\cdot\E[g(X)].$$
+\color{blue}
+\begin{proof}
+\begin{equation*}
+    \begin{split}
+        \E[(f(X)-f(Y))(g(X)-g(Y))] &=\E(f(X)g(X)-f(X)g(Y) - f(Y)g(X)+g(Y)f(Y))\\
+        &\stackrel{(*)}{=} \E(f(X)g(X))-\E(f(X))\E(g(Y))-\E(f(Y))\E(g(X))+\E(g(Y)f(Y))\\
+        &\stackrel{(**)}{=} 2\E(f(X)g(X))-2\E(f(X))\E(g(X))\\
+        &=2\text{Cov}(f(X),g(X))\\
+        &\stackrel{(***)}{\geq} 0
+    \end{split}
+\end{equation*}
+$(*)$ $X,Y$ independent.\\
+$(**)$ $X,Y$ identically distributed.\\
+$(***)$ by the result from (a)
+\end{proof}
+\color{black}
+\section*{Problem 3}
+Suppose that $X$ and $Y$ have joint density $f(x,y)$ given by $f(x,y)=ce^{-x}$ for $x>0$ and $-x<y<x$ and $f(x,y) = 0$ otherwise.
+\subsection*{(a)}
+Show that $c = 1/2$.
+\color{blue}
+\\\\\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        \int_0^\infty\int_{-x}^{x}f(x,y)dydx &=1\\
+        \int_0^\infty\int_{-x}^{x}ce^{-x}dydx &=1\\
+        2c\int_0^\infty xe^{-x}dx &=1\\
+        2c &= 1\\
+        c &=\frac{1}{2}
+    \end{split}
+\end{equation*}
+\color{black}
+\subsection*{(b)}
+Find the marginal densities of $X$ and $Y$, and the conditional density of $Y$ given $X$.
+\color{blue}
+\\\\\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        f_X(x) &= \int_{-x}^x \frac{1}{2}e^{-x}dy\\
+        &= xe^{-x},\ x>0\\
+        f_Y(y) &= \int \frac{1}{2}e^{-x}\mathbf{1}_{(-x,x)}(y)dx\\
+        &=\int_{|y|}^{\infty}\frac{1}{2}e^{-x}dx\\
+        &=\frac{1}{2}e^{-|y|}\\
+        f_{Y\vert X}(y\vert x) &=\frac{f_{X,Y}(x,y)}{f_X(x)}\\
+        &=\frac{1}{2x},\ x>0,\ -x<y<x.
+    \end{split}
+\end{equation*}
+\color{black}
+\subsection*{(c)}
+Find $\prob(X>2Y)$
+\color{blue}
+\\\\\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        \prob(X\geq 2Y) &=\int_0^\infty\prob\left(Y\leq\frac{X}{2}\vert X=x\right)f_X(x)dx\\
+        &=\int_0^\infty\int_{-\infty}^{x/2}\frac{1}{2x}\mathbf{1}_{(-x,x)}(y)\cdot xe^{-x}dydx\\
+        &=\frac{3}{4}\int_0^\infty xe^{-x}dx\\
+        &=\frac{3}{4}
+    \end{split}
+\end{equation*}
+\end{document}

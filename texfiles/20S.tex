@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[]{amsthm} %lets us use \begin{proof}
+\usepackage[]{amssymb} %gives us the character \varnothing
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+
+\title{MATH 505a Spring 2020 Qual Solution Attempts}
+\author{Troy Tao}
+\date\today
+
+\begin{document}
+\maketitle 
+Contact \textcolor{blue}{yntao@usc.edu} if you think this document needs revision.
+
+
+\section*{Problem 1}
+Each pack of bubble gum contains one of $n$ types of coupon, equally likely to be each of the types, independently from one pack to another. Let $T_j$ be number of packs you must buy to obtain coupons of $j$ different types. Note that $T_1=1$ always.
+\subsection*{(a)}
+Find the distribution and expected value of $T_2-T_1$ and of $T_3-T_2$.
+\color{blue}
+\\\\\textit{Solution. }Notice that these differences are geometric distributions:
+\begin{equation*}
+    \prob(T_2-T_1=t) = \left(\frac{n-1}{n}\right)\left(\frac{1}{n}\right)^{t-1},\ t \geq 1.
+\end{equation*}
+\begin{equation*}
+    \prob(T_3-T_2=t) = \left(\frac{n-2}{n}\right)\left(\frac{2}{n}\right)^{t-1},\ t \geq 1.
+\end{equation*}
+\begin{equation*}
+    \E(T_2-T_1) = \frac{n}{n-1}    
+\end{equation*}
+\begin{equation*}
+    \E(T_3-T_2) = \frac{n}{n-2}
+\end{equation*}
+\color{black}
+\subsection*{(b)}
+Compute $\E T_n$.
+\color{blue}
+\\\\\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        \E(T_n) &= \E [(T_n-T_{n-1})+(T_{n-1}-T_{n-2})+\cdots+(T_2-T_1)+T_1]\\
+            &=n+\frac{n}{2}+\cdots+\frac{n}{n-1}+1\\
+            &=\sum_{k=1}^n\frac{n}{k}
+    \end{split}
+\end{equation*}
+\color{black}
+\subsection*{(c)}
+Fix $k$ and let $A_i$ be the event that none of the first $k$ packs you buy contain coupon $i$. Find $\prob(A_1\cup A_2 \cup A_3\cup A_4)$. Then fix $\alpha>0$, take $k=\lfloor\alpha n \rfloor$ and find the limit of this probability as $n \rightarrow \infty$. Here $\lfloor x \rfloor$ denotes the largest integer $\leq x$. HINT: Consider probabilities $\prob(A_i),\prob(A_i\cap A_j)$, etc. 
+\color{blue}
+\\\\\textit{Solution. }By inclusion-exclusion theorem, 
+\begin{equation*}
+    \begin{split}
+        \prob(A_1\cup A_2 \cup A_3\cup A_4) &= \sum_{i=1}^4\prob(A_i)-\sum_{i,j=4}^4\prob(A_i\cap A_j)+\sum_{i,j,k=1}^4\prob(A_i\cap A_j \cap A_k) -\prob(A_1\cap A_2\cap A_3\cap A_4)\\
+            &={4 \choose 1} \left(\frac{n-1}{n}\right)^k-{4 \choose 2} \left(\frac{n-2}{n}\right)^k+{4 \choose 3} \left(\frac{n-3}{n}\right)^k-{4 \choose 4} \left(\frac{n-4}{n}\right)^k\\
+            &=4 \left(1-\frac{1}{n}\right)^k-6 \left(1-\frac{2}{n}\right)^k+4 \left(1-\frac{3}{n}\right)^k- \left(1-\frac{4}{n}\right)^k
+    \end{split}
+\end{equation*}
+Now, take $ k = \lfloor \alpha n \rfloor$ and $n \rightarrow \infty$, we have:
+\begin{equation*}
+    \begin{split}
+        \lim_{n\rightarrow \infty}\prob(A_1\cup A_2 \cup A_3\cup A_4) &=\lim_{n\rightarrow \infty}\left(4 \left(1-\frac{1}{n}\right)^{\lfloor \alpha n \rfloor}-6 \left(1-\frac{2}{n}\right)^{\lfloor \alpha n \rfloor}+4 \left(1-\frac{3}{n}\right)^{\lfloor \alpha n \rfloor}- \left(1-\frac{4}{n}\right)^{\lfloor \alpha n \rfloor}\right)\\
+            &=\lim_{n\rightarrow \infty}\left(4 \left(1-\frac{1}{n}\right)^{\alpha n}-6 \left(1-\frac{2}{n}\right)^{\alpha n}+4 \left(1-\frac{3}{n}\right)^{\alpha n}- \left(1-\frac{4}{n}\right)^{\alpha n}\right)\\
+            &=4e^{-\alpha}-6e^{-2\alpha}+4e^{-3\alpha}-e^{-4\alpha}
+    \end{split}
+\end{equation*}
+\color{black}
+\subsection*{(d)}
+Assume there are $n=4$ coupon types; find $\prob(T_4>k)$ for all $k\geq4$. HINT: This is short if you use what you've already done.
+\color{blue}
+\\\\\textit{Solution. }From (c), we have: 
+\begin{equation*}
+    \prob(T_4>k) = 4 \left(\frac{3}{4}\right)^k-6 \left(\frac{1}{2}\right)^k+4 \left(\frac{1}{4}\right)^k,\ k\geq 4
+\end{equation*}
+\color{black}
+\section*{Problem 2}
+Let $X$ be exponential($\lambda$) (that is, density $f(x)=\lambda e^{-\lambda x}$). The \textit{integer part} of $X$ is $\lfloor X\rfloor = \max\{k\in\mathbb{N}:k\leq X\}$. The \textit{fractional part} of $X$ is $X-\lfloor X \rfloor$. Show that $\lfloor X\rfloor$ and $X-\lfloor X\rfloor$ are independent. HINT: In general, two random variables $U,V$ are independent if the distribution of V conditioned on $U=u$ doesn't depend on $u$.
+\color{blue}
+\begin{proof} It suffices to show the conditional probability is same as the unconditioned one:
+\begin{equation*}
+\begin{split}
+    \prob(\lfloor X\rfloor=n\vert X-\lfloor X\rfloor = \alpha)&= \frac{f_X(n+\alpha)}{\sum_{k=0}^\infty f_X(k+\alpha)}\\
+        &=\frac{\lambda e^{-\lambda (n+\alpha)}}{\sum_{k=0}^\infty\lambda e^{-\lambda (k+\alpha)}}\\
+        &=\frac{e^{-\lambda n}}{\sum_{k=0}^\infty e^{-\lambda k}}\\
+        &=\frac{e^{-\lambda n}}{\frac{1}{1-e^{-\lambda}}}\\
+        &=e^{-\lambda n}-e^{-\lambda(n+1)}\\
+        &\stackrel{(*)}{=} \prob(n\leq X < n+1)\\
+        &=\prob(\lfloor X \rfloor = n)
+\end{split}
+\end{equation*}
+$(*)$ X is continuous.
+\end{proof}
+\color{black}
+\section*{Problem 3}
+Let $X_1,X_2,X_3$ be i.i.d. uniform in [0,1]. Let $X_{(1)}$ be the smallest of the 3 values, $X_{(2)}$ the second smallest, and $X_{(3)}$ the largest.
+\subsection*{(a)}
+Find the distribution function and expected value for $X_{(1)}$.
+\color{blue}
+\\\\\textit{Solution. } Let $F_{(i)}$ denotes the cdf of $X_{(i)}$.
+\begin{equation*}
+    \begin{split}
+        F_{(1)}(x) &= \prob(X_{(1)} \leq x)\\
+        &= 1-\prob(X_{(1)}>x)\\
+        &= 1-\prod_{i=1}^3\prob(X_i>x)\\
+        &= 1-(1-x)^3,\ 0<x<1
+    \end{split}
+\end{equation*}
+Since $X_{(1)} \geq 0$, we can compute expectation using complementary cdf: 
+\begin{equation*}
+    \begin{split}
+        \E(X_{(1)})&=\int_0^1(1-x)^3dx\\
+        &=\frac{1}{4}
+    \end{split}
+\end{equation*}
+\color{black}
+\subsection*{(b)}
+Find the distribution function and the density of $X_{(2)}$.
+\color{blue}
+\\\\\textit{Solution. }
+\begin{equation*}
+    \begin{split}
+        \prob(X_{(2)}\leq x) &\stackrel{(*)}{=}(\prob(X_1\leq x))^3+{3 \choose 2}(\prob(X_1\leq x))^2(\prob(X_1>x))\\
+            &=x^3+3x^2(1-x),\ 0<x<1\\
+        f_{(2)}(x) &= 6x-6x^2,\ 0<x<1
+    \end{split}
+\end{equation*}
+
+\end{document}

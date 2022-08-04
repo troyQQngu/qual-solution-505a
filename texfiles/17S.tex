@@ -1,0 +1,148 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[]{amsthm} %lets us use \begin{proof}
+\usepackage[]{amssymb} %gives us the character \varnothing
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\sol}{\\\\\textit{Solution. }}
+\def\beq#1\eeq{%
+    \begin{equation*}\begin{split}%
+      #1%  
+    \end{split}\end{equation*}%
+}
+
+\title{MATH 505a Spring 2017 Qual Solution Attempts}
+\author{Troy Tao}
+\date\today
+
+\begin{document}
+\maketitle 
+Contact \textcolor{blue}{yntao@usc.edu} if you think this document needs revision.
+
+\section*{Problem 1}
+Three points are chosen independently and uniformly inside the unit square in the plane. Find the expected area of the smallest closed rectangle that has sides parallel to the coordinate axes and that contains the three points. HINT: Consider what happens with just one coordinate.
+\color{blue}
+\sol Let $(X_1,Y_1),(X_2,Y_2),(X_3,Y_3)$ be the coordinate of the three points, $A$ be the area of the rectangle. Also let $X_{(i)}$ be the ith smallest among $X_1,X_2,X_3$. Since $X_i$'s and $Y_i$'s are iid,
+\beq
+    \E(A) &=\E((X_{(3)}-X_{(1)})(Y_{(3)}-Y_{(1)}))\\
+        &=(\E(X_{(3)}-X_{(1)}))^2
+\eeq 
+$$ \prob(X_{(3)}\leq x)=\prod_{i=1}^3\prob(X_i\leq x) = x^3,\ f_{X_{(3)}}(x)=3x^2,\ 0<x<1$$
+$$ \prob(X_{(1)}\leq x)=1-\prod_{i=1}^3\prob(X_i>x) = 1-(1-x)^3,\ f_{X_{(1)}}(x)=3(1-x)^2,\ 0<x<1$$
+
+\beq
+    \E(A) &= \left(\int_0^1 3x^3dx-\int_0^1 3(1-x)^2\cdot x dx\right)^2\\
+    &=\left(\frac{1}{2}\right)^2\\
+    &=\frac{1}{4}
+\eeq
+
+\color{black}
+\section*{Problem 2}
+Suppose $(X,Y)$ has joint density of the form $f(x,y)=g(\sqrt{x^2+y^2})$ for $(x,y) \in \mathbb{R}^2$, for some function $g$. Show that $Z=Y/X$ has the Cauchy density $h(t)=1/(\pi(1+t^2)),\ t\in\mathbb{R}$. HINT: Polar coordinates.
+\color{blue}
+\begin{proof}
+Use polar coordinate (draw the graph to help visualizing), denoting $\theta = arctan(t)$,
+\beq
+    \prob\left(\frac{Y}{X}\leq t\right) &= \prob(X>0,Y\leq tX)+\prob(X<0,Y\geq tX)\\
+        &= \int_{(-\pi/2,\theta)\cup (\pi/2,\theta+\pi)}\int_0^\infty g(r) rdrd\theta\\
+        &=\left(\int_0^\infty g(r) rdr\right)\left(\int_{(-\pi/2,\theta)\cup (\pi/2,\theta+\pi)}d\theta \right)\\
+        &=\left(\int_0^\infty g(r) rdr\right)\cdot 2\left(\theta-\frac{\pi}{2}\right)\\
+        &\stackrel{(*)}{=}\frac{2\theta-\pi}{2\pi}
+\eeq
+$(*)$ Notice that $\prob(Y/X\leq \infty) = 1 = \left(\int_0^\infty g(r)rdr\right)\cdot 2\pi$\\
+\\ By differentiating,
+\beq
+    f_{Y/X}(t)= \frac{d}{dt}\frac{2\cdot arctan(t)-\pi}{2\pi}=\frac{1}{\pi}\frac{1}{t^2+1}\\
+\eeq 
+\end{proof}
+\color{black}
+\section*{Problem 3}
+Assume $\sqrt{3}<C<2$. Consider a sequence $X_1,X_2, X_3,$... of random variables where $X_1$ is uniform on [0,1], and where the conditional distribution of $X_{m+1}$ given $X_n$ is uniform on $[0,CX_n]$.
+\subsection*{(a)}
+Find the conditional expectation of $(X_{n+1})^r$ given $X_n$, for $r\geq 1$.
+\color{blue}
+\sol Given $X_n$,
+\beq
+    f_{X_{n+1}\vert X_n}(x) = \frac{1}{CX_n},\ 0<x<CX_n
+\eeq 
+\beq
+    \E(X_{n+1}^r\vert X_n) &= \int_0^{CX_n}\frac{x^r}{CX_n}dx\\
+        &= \frac{(CX_n)^r}{r+1}
+\eeq 
+\color{black}
+\subsection*{(b)}
+Show that $X_n$ converges to 0 in mean but not in mean square.
+\color{blue}
+\begin{proof} By the result from part(a),
+\beq
+\E(X_n) &= \E(\E(X_n\vert X_{n-1})) \\
+    &= \frac{C}{2}\E(X_{n-1})\\
+    &=\left(\frac{C}{2}\right)^2\E(X_{n-2})\\
+    & \cdots\\
+    &=\left(\frac{C}{2}\right)^{n-1}\E(X_1)\\
+    &=\left(\frac{C}{2}\right)^{n-1}\cdot\frac{1}{2}
+\eeq
+$$\sqrt{3}<C<2 \implies  \frac{C}{2}<1 \implies \E(X_n) \rightarrow 0$$
+\beq
+\E(X_n^2) &=\frac{C^2}{3}\E(X_{n-1}^2)\\
+    &=\left(\frac{C^2}{3}\right)^{n-1}\cdot\frac{1}{3}\\
+    \frac{C^2}{3}>1 &\implies \E(X_n^2) \rightarrow \infty
+\eeq 
+\end{proof}
+\color{black}
+\subsection*{(c)}
+Show that $X_n$ converges to 0 almost surely.
+\color{blue}
+\begin{proof} Given $\epsilon>0$,
+\beq
+    \sum_{n=1}^\infty\prob(X_n>\epsilon) &\leq \sum_{n=1}^\infty\frac{\E(X_n)}{\epsilon}\\
+        &=\frac{1}{\epsilon}\sum_{n=1}^\infty \frac{1}{2}\left(\frac{C}{2}\right)^{n-1}\\
+        &<\infty
+\eeq
+since $\frac{C}{2}<1$. Then by Borel-Cantelli lemma,
+\beq
+    \prob(\text{limsup}_n\{X_n>\epsilon\}) &= 0\\
+\eeq
+Note that for any $m$, $ \prob(\cup_{n\geq m}\{X_m>\epsilon\})\geq\prob(\lim_nX_n>\epsilon)$. Therefore,
+\beq
+    \prob(\lim_nX_n>\epsilon)&\leq\lim_m\prob(\cup_{n\geq m}\{X_m>\epsilon\})\\
+        &=\prob(\text{limsup}_n\{X_n>\epsilon\})\\
+        &=0
+\eeq 
+\end{proof}
+\color{black}
+\section*{Problem 4}
+Suppose that $n$ boys and $m$ girls are arranged in a row, and assume that all possible orderings of the $n+m$ children are equally likely.
+\subsection*{(a)}
+Find the probability that all $n$ boys appear in a single block.
+\color{blue}
+\sol The total number of combinations is ${n+m \choose n}$, since we can index the positions from $1$ to $n+m$, and for each combination we assign different choice of positions to boys/girls. So when all the boys are in a single block, we only need to choose different positions for the left most boy from $1$ to $m+1$.
+$$\prob(\text{boys in a single block})=\frac{m+1}{{m+n \choose n}}=\frac{n!(m+1)!}{(n+m)!}$$
+\color{black}
+\subsection*{(b)}
+Find the probability that no two boys are next to each other.
+\color{blue}
+\sol We are essentially assigning boys to the $m+1$ ``gaps'' between  girls including the left and right ends. Therefore, we are choosing n positions from m+1 positions.
+\beq
+    \prob(\text{no two boys are next to each other}) &= \frac{{m+1\choose n}}{{n+m \choose n}}\\
+        &=\frac{(m+1)!m!}{(m-n+1)!(n+m)!}
+\eeq 
+And obviously the probability is $0$ when $n>m+1$.
+\color{black}
+\subsection*{(c)}
+Find the expected number of boys who have a girl next to them on both sides.
+\color{blue}
+\sol Let $X_i$ be the indicator function of ith boy having two girls next to him on both sides.
+\beq
+    \E(N) &= \sum_{i=1}^n\E(X_i)\\
+        &= \sum_{i=1}^n\prob(X_i=1)\\
+        &= n\cdot\prob(\text{not at position 1 or position n+m})\cdot\prob(\text{left is a girl})\cdot\prob(\text{right is a girl}\vert\text{left is a girl})\\
+        &= n\cdot\frac{m+n-2}{m+n}\cdot\frac{m}{n+m-1}\cdot\frac{m-1}{n+m-2}\\
+        &=\frac{nm(m-1)}{(n+m-1)(n+m)}
+\eeq 
+\end{document}

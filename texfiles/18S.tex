@@ -1,0 +1,137 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[]{amsthm} %lets us use \begin{proof}
+\usepackage[]{amssymb} %gives us the character \varnothing
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\sol}{\\\\\textit{Solution. }}
+\def\beq#1\eeq {%
+    \begin{equation*}\begin{split}%
+      #1%  
+    \end{split}\end{equation*}%
+}
+
+\title{MATH 505a Spring 2018 Qual Solution Attempts}
+\author{Troy Tao}
+\date\today
+
+\begin{document}
+\maketitle 
+Contact \textcolor{blue}{yntao@usc.edu} if you think this document needs revision.
+
+\section*{Problem 1}
+Let $X$ and $Y$ be independent standard normal random variables and define $V=\text{min}(X,Y)$. Compute the probability density function of $V^2$. The final answer should be an elementary function.
+\color{blue}
+\sol Let $\phi$ denote the cdf of standard normal, and by the symmetry of the standard normal distribution:
+\beq
+    \prob(V\leq t) &= 1-\prob(V>t)\\
+        &= 1-\prob(X>t)\prob(Y>t)\\
+        &\stackrel{(*)}{=} 1-\phi(-t)^2\\
+\eeq
+For $V^2,\ t >0$:
+\beq
+    \prob(V^2\leq t^2) &= \prob(-t\leq V \leq t)\\
+        &=\prob(V\leq t)-\prob(V\leq -t)\\
+        &= \phi(t)^2-\phi(-t)^2
+\eeq
+By differentiate, we have:
+\beq
+    f_{V^2}(x) &= \frac{d}{dx}(\phi(\sqrt{x})^2-\phi(-\sqrt{x})^2)\\
+        &= 2\phi(\sqrt{x})f_X(\sqrt{x})\frac{1}{2\sqrt{x}}-2\phi(-\sqrt{x})f_X(-\sqrt{x})\frac{-1}{2\sqrt{x}}\\
+        &=\frac{1}{\sqrt{2\pi x}}e^{-x/2}(\phi(\sqrt{x})+\phi(-\sqrt{x}))\\
+        &\stackrel{(*)}{=}\frac{1}{\sqrt{2\pi x}}e^{-x/2}
+\eeq
+$(*)$ Symmetry of the standard normal.
+\color{black}
+\section*{Problem 2}
+Consider positions 1 to $n$ arranged in a circle, so that 2 comes after 1, 3 comes after 2, ..., $n$ comes after $n-1$, and 1 comes after $n$. Similarly, take 1 to $n$ as values, with cyclic order, and consider all $n!$ ways to assign values to positions, bijectively, with all $n!$ possibilities equally likely. For $i=1$ to $n$, let $X_i$ be the indicator that position $i$ and the one following are filled in with two consecutive values in increasing order, and define
+$$S_n=\sum_{i=1}^n X_i,\ \  T_n = \sum_{i=1}^n iX_i$$
+For example, with $n=6$ and the circular arrangement 314562, we get $X-3=1$ since 45 are consecutive in increasing order, and similarly $X_4=X_6=1$, so that $S_6=3,\ T_6=13$.
+\subsection*{(a)}
+Compute the mean and the variance of $S_n$.
+\color{blue}
+\sol \beq
+    \E(S_n) &= \sum_{i=1}^n \E(X_i)\\
+        &=\sum_{i=1}^n \prob(X_i=1)\\
+        &= n\cdot \frac{n-1}{n(n-1)}\\
+        &=1\\
+    \E(X_i^2) &= \E(X_i) = 1\\
+    \E(X_iX_j) &= 
+            \begin{cases}
+            	\frac{n-2}{n(n-1)(n-2)}, & |i-j|=1\\
+                \frac{n-2}{n(n-1)(n-2)}, & |i-j|>1
+            \end{cases}
+\eeq
+
+\beq
+    Var(S_n) &= \E(S_n^2)-\E(S_n)^2\\
+        &=\sum_{i=1}^n \E(X_i^2)+\sum_{i\neq j}^n\E(X_iX_j)-\E(S_n)^2\\
+        &=1+n(n-1)\frac{n-2}{n(n-1)(n-2)}-1\\
+        &=1
+\eeq
+\color{black}
+\subsection*{(b)}
+Compute the mean and variance of $T_n$.
+\color{blue}
+\sol\beq
+    \E(T_n) &= \sum_{i=1}^ni\E(X_i)\\
+        &= \sum_{i=1}^n i \cdot\frac{1}{n}\\
+        &=\frac{1}{n}\frac{n(n+1)}{2}\\
+        &=\frac{1+n}{2}\\
+    \E(T_n^2)&= \E(\sum_{i=1}^nX_i)^2\\
+        &= \E(\sum_{i,j}^n ij X_i X_j)\\
+        &=\sum_{i,j}^n ij \E(X_iX_j)\\
+        &=\frac{1}{n(n-1)}\sum_{i,j}^n ij\\
+        &=\frac{1}{n(n-1)}(\sum_{i=1}^ni)^2\\
+        &=\frac{1}{n(n-1)}(\frac{(n+1)n}{2})^2\\
+        &=\frac{n(n+1)^2}{4(n-1)}\\
+    Var(T_n) &= \E(T_n^2)-\E(T_n)^2\\
+        &=\frac{n(n+1)^2}{4(n-1)}-\frac{(1+n)^2}{4}
+    \eeq
+\color{black}
+\section*{Problem 3}
+A box is filled with coins, each giving heads with some probability $p$. The value of $p$ varies from one coin to another, and it is uniform in [0,1]. A coin is selected at random; that one coin is tossed multiple times. HINT: $\int_0^1 x^m(1-x)^l dx = \frac{m!l!}{(m+l+1)!}$ for nonnegative integers $m,\ l$.
+\subsection*{(a)}
+Compute the probability that the first two tosses are both heads.
+\color{blue}
+\sol 
+\beq
+    \prob(\text{head twice}) &= \int_0^1\prob(\text{head twice}\vert p=t)f_p(t)dt\\
+        &=\int_0^1t^2dt\\
+        &=\frac{1}{3}
+\eeq{}
+\color{black}
+\subsection*{(b)}
+Let $X_n$ be the number of heads in the first $n$ tosses. Compute $\prob(X_n=k)$ for all $0\leq k\leq n$.
+\color{blue}
+\sol By the hint,
+\beq
+    \prob(X_n) &= {n \choose k} \int_0^1 p^k(1-p)^{n-k}dp\\
+        &= {n \choose k} \frac{k!(n-k)!}{(n+1)!}\\
+        &=\frac{1}{n+1}
+\eeq
+\color{black}
+\subsection*{(c)}
+Let $N$ be the number of tosses needed to get heads for the first time. Compute $\prob(N=n)$ for all $n\leq 1$.
+\color{blue}
+\sol
+\beq
+    \prob(N=n) &= \int_0^1(1-p)^{n-1}p\ dp\\
+        &= \frac{(n-1)!}{(n+1)!}\\
+        &= \frac{1}{n(n+1)}
+\eeq{}
+\color{black}
+\subsection*{(d)}
+Compute the expected value of $N$.
+\color{blue}
+\sol
+\beq
+    \E(N)& = \sum_{n=1}^\infty \frac{1}{n+1}\\
+        &= \infty
+\eeq{}
+\end{document}

@@ -1,0 +1,186 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[]{amsthm} %lets us use \begin{proof}
+\usepackage[]{amssymb} %gives us the character \varnothing
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\title{MATH 505a Fall 2021 Qual Solution Attempts}
+\author{Troy Tao}
+\date\today
+
+\begin{document}
+\maketitle 
+Contact \textcolor{blue}{yntao@usc.edu} if you find errata.
+
+
+%For fancy calligraphy letters, use \mathcal{}
+%Special characters are their own commands
+
+\section*{Problem 1}
+\subsection*{(a)}
+Let $X$ be a non-negative random variable with finite expectation. Show that
+$$\sum_{i=1}^{\infty} \mathbb{P}(X\geq i) \leq E[X] < 1+\sum_{i=1}^{\infty} \mathbb{P}(X\geq i). $$
+\color{blue}
+\begin{proof}
+    Since $X$ is non-negative,
+    \begin{equation*}
+        \begin{split}
+            \mathbb{E}[X] & = \int_{[0,\infty)} xf(x)dx \\
+                 & = \sum _{i=0}^{\infty}\int_{[i,i+1)}xf(x)dx\\
+        \end{split}
+    \end{equation*}
+    Then notice that,
+    \begin{equation*}
+        i\int_{[i,i+1)}f(x)dx \leq \int_{[i,i+1)}xf(x)dx \leq (i+1)\int_{[i,i+1)}f(x)dx
+    \end{equation*}
+    That is,
+    \begin{equation*}
+        i\mathbb{P}(i \leq X \leq i+1)  \leq \int_{[i,i+1)}xf(x)dx \leq (i+1)\mathbb{P}(i \leq X \leq i+1)
+    \end{equation*}
+    Plugging into the sum, the lower bound becomes: 
+    \begin{equation*}
+        \begin{split}
+            &\sum_{i=0}^\infty i\mathbb{P}(i\leq X\leq i+1) \\
+            =& \sum_{i=1}^\infty \mathbb{P}(X \geq i)\\
+        \end{split}
+    \end{equation*}
+    Similarly, the upper bound:
+    \begin{equation*}
+        \begin{split}
+            &\sum_{i=0}^\infty (i+1)\mathbb{P}(i\leq X\leq i+1) \\
+            =& \sum_{i=0}^\infty i\mathbb{P}(i\leq X\leq i+1)+\sum_{i=0}^\infty \mathbb{P}(i\leq X \leq i+1)\\
+            =& \sum_{i=1}^\infty \mathbb{P}(X \geq i)+1\\
+        \end{split}
+    \end{equation*}
+\end{proof}
+\color{black}
+\subsection*{(b)}
+Show that if X takes values only in $\{0,1,\cdots,n\}$ for some $n$, then the first inequality in (a) is an equality:
+\begin{equation*}
+    \sum_{i=1}^{\infty} \mathbb{P}(X\geq i) = \mathbb{E}[X].
+\end{equation*}
+\color{blue}
+\begin{proof}
+    Note that if $X$ only take natural number values, we have $\mathbb{P}(X\geq i) = \sum_{k=i}^\infty\mathbb{P}(X=k)$. Plug this into the left hand side:
+    \begin{equation*}
+        \begin{split}
+            \sum_{i=1}^{\infty} \mathbb{P}(X\geq i) &= \sum_{i=1}^{\infty} \sum_{k=i}^\infty\mathbb{P}(X=k)\\
+            &=\mathbb{P}(X = 1) +\mathbb{P}(X = 2)+\mathbb{P}(X = 3)+\cdots\\
+            &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  +\mathbb{P}(X = 2)+\mathbb{P}(X = 3)+\cdots\\
+            &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ +\mathbb{P}(X = 3)+\cdots\\
+            &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ +\cdots\\
+            &=\sum_{i=1}^\infty i \mathbb{P}(X = i)\\
+            &=\mathbb{E}[X]
+        \end{split}
+    \end{equation*}
+\end{proof}
+\color{black}
+\subsection*{(c)}
+Let M be the minimum value seen in 4 die rolls. Find $\mathbb{E}[M]$. You don't need to simplify to one number, just get an expression in terms of numbers only.
+\color{blue}
+\begin{proof}
+Note that $M$ only takes values in $\{1,2,3,4,5,6\}$, let $X_i$ denotes the value of i-th dice roll we can use the conclusion from (b) that:
+\begin{equation*}
+    \begin{split}
+        \mathbb{E}[M] &= \sum_{i=1}^6 \mathbb{P}(M\geq i)\\
+        &= \sum_{i=1}^6 \prod_{j=1}^4 \mathbb{P}(X_j\geq i)\\
+        &= \sum_{i=1}^6 \left(1-\frac{i-1}{6}\right)^4\\
+    \end{split}
+\end{equation*}
+\end{proof}
+\color{black}
+\section*{Problem 2}
+Suppose $X$ and $Y$ are independent continuous random variables with uniform distribution on $[0,1]$.
+\subsection*{(a)}
+Find the density function of $X+2Y$.\\
+\\
+\color{blue}
+\textit{Solution.} By conditioning on $X$, we have:\\
+\textit{Case 1.} $z\in [0,1)$,
+\begin{equation*}
+\begin{split}
+    \mathbb{P}(X+2Y\leq z) &= \int_0^z \frac{1}{2}(z-x)\ dx\\
+    &=\frac{z^2}{4}
+\end{split}
+\end{equation*}
+\textit{Case 2.} $z \in [1,2)$,
+\begin{equation*}
+    \begin{split}
+        \mathbb{P}(X+2Y\leq z) &= \int_0^1 \frac{1}{2}(z-x) \ dx\\
+        &=\frac{2z-1}{4}
+    \end{split}
+\end{equation*}
+\textit{Case 3.} $z \in [2,3]$,
+\begin{equation*}
+    \begin{split}
+        \mathbb{P}(X+2Y\leq z) &= (z-2) + \int_{z-2}^1\frac{1}{2}(z-x) \ dx\\
+        &= z-2-\frac{z^2-2z-3}{4}
+    \end{split}
+\end{equation*}
+So  compute the pdf by differentiating:
+\begin{equation*}
+    f_{X+Y}(z) =
+    \begin{cases}
+        \frac{z}{2} & 0\leq z<1\\
+        \frac{1}{2} & 1\leq z<2\\
+        -\frac{z}{2}+\frac{3}{2} & 2\leq z \leq3
+    \end{cases}
+\end{equation*}
+\color{black}
+\subsection*{(b)}
+Find the joint density function for $X-Y$, $X+Y$.\\
+\\
+\color{blue}
+\textit{Solution.} Let $U = X+Y,\ V=X-Y$. Then $ X = \frac{U+V}{2},\ Y = \frac{U-V}{2}$. We can compute the absolute value of Jacobian of the map $(u,v) \mapsto (x,y) $:
+\begin{equation*}
+    J = 
+    \begin{vmatrix}
+    \frac{1}{2} & \frac{1}{2}\\
+    \frac{1}{2} & -\frac{1}{2}
+    \end{vmatrix}
+    =\frac{1}{2}
+\end{equation*}
+then We have the following:
+\begin{equation*}
+    \begin{split}
+        f_{U,V}(u,v) &= f_{X,Y}(\frac{u+v}{2},\frac{u-v}{2})\cdot |J| \\
+        &= \frac{1}{2}\mathbbm{1}_{0 \leq \frac{u+v}{2} \leq 1, 0 \leq \frac{u-v}{2}\leq 1}(u,v)\\
+        &= \frac{1}{2}\mathbbm{1}_{0 \leq u+v \leq 2, 0 \leq u-v \leq 2}(u,v)
+    \end{split}
+\end{equation*}
+\color{black}
+\section*{Problem 3}
+Consider Bernoulli trials with success probability $p\in (0,1)$. Let $p_n$ be the probability of an odd number of successes in $n$ trials.
+\subsection*{(a)}
+Express $p_n$ in terms of $p_{n-1}$.
+\color{blue}
+\begin{equation*}
+    p_n = p\cdot(1-p_{n-1})+(1-p)\cdot p_{n-1}
+\end{equation*}
+\color{black}
+\subsection*{(b)}
+Based on (a), for what value $\lambda$ does $p_{n-1}=\lambda$ imply $p_n=\lambda$?
+\color{blue}
+\begin{equation*}
+    \begin{split}
+        \lambda &= p \cdot (1-\lambda)+(1-p)\cdot\lambda\\
+        \implies \lambda &= \frac{1}{2}
+    \end{split}
+\end{equation*}
+\color{black}
+\subsection*{(c)}
+Show that $lim_np_n = \lambda$, the value you found in (b). HINT: Write $p_n$ as $\lambda+\epsilon_n$, for the $\lambda$ you found in (b).
+\color{blue}
+\begin{equation*}
+\begin{split}
+    \lambda+\epsilon_n &= p\cdot(1-(\lambda+\epsilon_{n-1}))+(1-p)\cdot (\lambda+\epsilon_{n-1})\\
+    \epsilon_n &= (1-2p)\epsilon_{n-1}\\
+    \stackrel{(*)}{\implies} \lim_{n\rightarrow{\infty}} \epsilon_{n} &= \lim_{n\rightarrow\infty}(1-2p)^{n-1}\epsilon_1 = 0
+\end{split}
+\end{equation*}
+$(*):|1-2p|<1$
+\end{document}

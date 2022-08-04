@@ -1,0 +1,151 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[]{amsthm} %lets us use \begin{proof}
+\usepackage[]{amssymb} %gives us the character \varnothing
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\sol}{\\\\\textit{Solution. }}
+\def\beq#1\eeq{%
+    \begin{equation*}\begin{split}%
+      #1%  
+    \end{split}\end{equation*}%
+}
+
+\title{MATH 505a Fall 2017 Qual Solution Attempts}
+\author{Troy Tao}
+\date\today
+
+\begin{document}
+\maketitle 
+Contact \textcolor{blue}{yntao@usc.edu} if you think this document needs revision.
+
+
+\section*{Problem 1}
+Let $X$ be uniform on [1,5], let $Y$ be uniform on [0,1], and assume that $X$ and $Y$ are independent.
+\subsection*{(a)}
+Compute the probability density function of the product $XY$.
+\color{blue}
+\sol \beq
+\prob(XY\leq t) &= \prob(Y\leq \frac{t}{X})\\
+&= \int \prob(Y\leq \frac{t}{x})f_X(x)dx
+\eeq 
+\textit{Case 1.} $0<t\leq 1$,
+\beq
+\prob(Y\leq \frac{t}{X}) &=\int_1^5 \frac{t}{x}\frac{1}{4}dx\\
+&=\frac{t}{4}\ln(5)
+\eeq 
+\textit{Case 2. }$1<t\leq 5$,
+\beq
+    \prob(Y\leq \frac{t}{X}) &= \int_1^t 1\cdot\frac{1}{4}dx+\int_t^5\frac{t}{x}\cdot \frac{1}{4}dx\\
+    &=\frac{1}{4}(t-1)+\frac{t}{4}\ln(\frac{5}{t})
+\eeq 
+Therefore, by differentiating:
+\beq
+    f_{XY}(t) = \begin{cases}
+    \frac{\ln(5)}{4}, & t\in(0,1],\\
+    \frac{1}{4}\ln\left(\frac{5}{t}\right), & t\in(1,5],\\
+    0, & \text{otherwise.}
+    \end{cases}
+\eeq
+\color{black}
+\subsection*{(b)}
+Compute the cumulative distribution function of the ratio $X/Y$.
+\color{blue}
+\sol 
+\beq
+\prob(X/Y\leq t) &=\prob(Y\geq X/t)\\
+&=\int\prob(Y\geq x/t)f_X(x)dx
+\eeq 
+\textit{Case 1. }$1<t\leq 5$,
+\beq
+    \prob(Y\geq X/t) &=\int_1^t(1-\frac{x}{t})\cdot \frac{1}{4}dx\\
+    &=\frac{t}{8}+\frac{1}{8t}-\frac{1}{4}
+\eeq 
+\textit{Case 2. }$t\geq 5$,
+\beq
+    \prob(Y\geq X/t) &= \int_1^5(1-\frac{x}{t})\cdot \frac{1}{4}dx\\
+    &=1-\frac{3}{t}
+\eeq 
+\color{black}
+\subsection*{(c)}
+Compute the characteristic function of the sum $X+Y$.
+\color{blue}
+\sol
+\beq
+    \E(e^{it(X+Y)})&= \E(e^{itX})\E(e^{itY})\\
+    &=\int_1^5e^{itx}\frac{1}{4}dx\int_0^1e^{ity}dy\\
+    &=-\frac{1}{4t^2}(e^{5it}-e^{it})(e^{it}-1)
+\eeq 
+\color{black}
+\subsection*{(d)}
+Compute the moment generating function of the random variable $X-\ln(Y)$.
+\color{blue}
+\sol
+\beq
+    \E(e^{t(X-\ln Y)}) &=\E(e^{tX}\cdot e^{-t\ln Y})\\
+    &=\E(e^{tX})\cdot \E(Y^{-t})\\
+    &=\int_1^5e^{tx}\frac{1}{4}dx\int_0^1y^{-t}dy\\
+\eeq
+Notice that the right multiplicand's integrability depends on $t$, so
+$$\E(e^{t(X-\ln Y)}) = \begin{cases}
+    \frac{e^{5t}-e^t}{4t(1-t)}, & t< 1,\\
+    \infty, & t\geq1
+    \end{cases}$$
+\color{black}
+\section*{Problem 2}
+An urn contains $2n$ balls, coming in pairs: two balls are labeled ``1'', two balls are labeled ``2'',..., two balls are labeled ``n''. A sample of size $n$ is taken without replacement. Denote by $N$ the number of pairs in the sample. Compute the expected value and the variance of $N$. \textbf{You do not need to simplify the expression for the variance.}
+\color{blue}
+\sol Let $X_i$ be the indicator function of the pair of balls labeled ``i'' are selected. And the probability of any pair being selected is the ratio of the number of combinations to select $n-2$ balls from the rest of $2n-2$ balls and the total number of combinations to select $n$ balls from $2n$ balls.
+\beq
+    \E(N) &= \E(\sum_{i=1}^n X_i)\\
+    &=\sum_{i=1}^n  \prob(X_i=1)\\
+    &= n\cdot \frac{{2n-2 \choose n-2}}{{2n \choose n}}\\
+    &= \frac{n(n-1)}{2(2n-1)}
+\eeq
+\beq
+    \E(X_i^2) &= \E(X_i)\\
+    &= \frac{n-1}{2(2n-1)}
+\eeq 
+Notice that the probability of two pairs being selected is the ratio of the number of combinations to select $n-4$ balls from the rest of $2n-4$ balls and the total number of combinations to select $n$ balls from $2n$ balls. so for $i \neq j$,
+\beq
+    \E(X_iX_j)&=\prob(X_i=1,\ X_j=1)\\
+        &= \frac{{2n-4 \choose n-4}}{{2n  \choose n}}\\
+        &= \frac{n(n-1)(n-2)(n-3)}{2n(2n-1)(2n-2)(2n-3)}
+\eeq
+\beq
+    Var(N) &= \E(N^2)-\E(N)^2\\
+        &= \sum_{i=1}^n \E(X_i^2)+\sum_{i\neq j}^n\E(X_iX_j) -\E(N)^2\\
+        &= n\cdot\frac{(n-1)}{2(2n-1)}+n(n-1)\cdot\frac{n(n-1)(n-2)(n-3)}{2n(2n-1)(2n-2)(2n-3)}-\left(\frac{n(n-1)}{2(2n-1)}\right)^2
+\eeq 
+\color{black}
+
+\section*{Problem 3}
+Let $U_1,U_2,...$ be iid random variables, uniformly distributed on [0,1], and let $N$ be a Poisson random variable with mean value equal to one. Assume that $N$ is independent of $U_1,U_2,...$ and define
+$$Y=\begin{cases}0, &\text{if } N=0,\\
+\max_{1\leq i \leq N}U_i, &\text{if } N>0.
+\end{cases}$$
+Compute the expected value of $Y$.
+\color{blue}
+\sol First we compute the expectation of $max_{1\leq i\leq k}U_i$ for some $k\geq 1$. For $0<t<1$,
+\beq
+    \prob(\max_{1\leq i \leq k}U_i\leq t) &= \prod_{i=1}^k  \prob(U_i\leq t)\\
+        &=t^k
+\eeq 
+Since $U_i$ only takes nonnegative value,
+\beq
+    \E(\max_{1\leq i\leq k}U_i) &= \int_0^1(1-t^k)dt\\
+        &=\frac{k}{k+1}
+\eeq 
+We compute the expectation of $Y$ by conditioning on $N$,
+\beq
+    \E(Y) &= \sum_{k=0}^\infty \E(Y\vert N=k)\prob(N=k)\\
+        &=0+\sum_{k=1}^\infty\frac{k}{k+1}e^{-1}\frac{1}{k!}\\
+        &=e^{-1}\sum_{k=1}^\infty\left(\frac{1}{k!}-\frac{1}{(k+1)!}\right)\\ 
+        &=e^{-1}
+\eeq 
+\end{document}

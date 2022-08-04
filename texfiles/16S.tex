@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[]{amsthm} %lets us use \begin{proof}
+\usepackage[]{amssymb} %gives us the character \varnothing
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\sol}{\\\\\textit{Solution. }}
+\def\beq#1\eeq{%
+    \begin{equation*}\begin{split}%
+      #1%  
+    \end{split}\end{equation*}%
+}
+
+\title{MATH 505a Spring 2016 Qual Solution Attempts}
+\author{Troy Tao}
+\date\today
+
+\begin{document}
+\maketitle 
+Contact \textcolor{blue}{yntao@usc.edu} if you think this document needs revision.
+
+\section*{Problem 1}
+A stick of length 1 is broken at a point uniformly distributed over its length.
+\subsection*{(a)}
+Find the mean and variance of the sum $S$ of the squares of the lengths of the two pieces.
+\color{blue}
+\sol Let $U$ be the location of the breaking point.
+\beq
+    \E(S) &= \E(U^2+(1-U)^2)\\
+        &= \E(2U^2-2U+1)\\
+        &= 2\cdot \frac{1}{3}-2\cdot \frac{1}{2}+1\\
+        &= \frac{2}{3}
+\eeq 
+\beq
+    \text{Var}(S) &= \E(S^2)-(\E(S))^2\\
+        &= \E((2U^2-2U+1)^2)-\left(\frac{2}{3}\right)^2\\
+        &= \E(4U^4-8U^3+8U^2-4U+1)-\frac{4}{9}\\
+        &= 4\cdot\frac{1}{5}-8\cdot\frac{1}{4}+8\cdot\frac{1}{3}-4\cdot\frac{1}{2}+1-\frac{4}{9}\\
+        &= \frac{1}{45}
+\eeq 
+\color{black}
+\subsection*{(b)}
+Find the density function of the product $M$ of the lengths of the two pieces. Note that $M\in[0,\frac{1}{4}]$.
+\color{blue}
+\sol\beq 
+\prob(M\leq t) &= \prob(U(1-U)\leq t)\\
+    &= \prob(U\leq \frac{1}{2}(1-\sqrt{1-4t})) +\prob(U\geq \frac{1}{2}(1+\sqrt{1-4t}))\\
+    &= 1-\sqrt{1-4t},\ 0\leq t\leq\frac{1}{4}\\
+f_M(t) &= \frac{d}{dt}(1-\sqrt{1-4t})\\
+    &= \frac{2}{\sqrt{1-4t}},\ 0\leq t\leq\frac{1}{4}
+\eeq 
+\color{black}
+\section*{Problem 2}
+There are two types of batteries in a bin. The life span of type $i$ is an exponential random variable with mean $\mu_i,i=1,2$. The probability of type $i$ battery to be chosen is $p_i$, with $p_1+p_2=1$. Suppose a randomly chosen battery is still operating after $t$ hours. What is the probability that it will still be operating after an additional $s$ hours?
+\color{blue}
+\sol Denote the life span for type 1 and 2 battery as $B_1,B_2$. Let $B$ be the life span of the chosen battery.
+\beq
+    \prob(B>s+t\vert B>t) &=\prob(B_1>s+t\vert B_1>t)p_1+\prob(B_2>s+t\vert B_2>t)p_2\\
+        &\stackrel{(*)}{=} \prob(B_1>s)p_1+\prob(B_2>s)p_2\\
+        &=p_1e^{-\mu_1s}+p_2e^{-\mu_2s}
+\eeq 
+$(*)$ Exponential random variables are memory-less. Proof is omitted.
+\color{black}
+\section*{Problem 3}
+Fix positive integers $m\leq n$ with $n>4$. Suppose $m$ people sit at a circular table with $n$ seats, with all ${n \choose m}$ seating equally likely. A seat is called \textit{isolated} if it is occupied and both adjacent seats are vacant. Find the mean and variance of the number of isolated seats.
+\color{blue}
+\sol Let $X_i$ be the indicator function of $i$th seat being isolated. Let $N =\sum_{i=1}^n$ be the total number of isolated seats. Clearly when $n<m+2$, $N=0$, $\E(N) =0$, Var$(N)=0$. Assume $n\geq m+2$,
+\beq
+    \E(N) &= \sum_{i=1}^n\E(X_i)\\
+        &=\sum_{i=1}^n\left.{n-3\choose m-1} \middle/ {n\choose m}\right.\\
+        &= n\cdot \left.{n-3\choose m-1} \middle/ {n\choose m}\right.
+\eeq 
+\beq
+    \E(X_i^2) =\E(X_i) =  \left.{n-3\choose m-1} \middle/ {n\choose m}\right.
+\eeq 
+For $i\neq j$, we want to compute the probability when both $i$th and $j$th seats are isolated. \\\\
+\textit{Case 1. }When $|i-j|=1$ or $|i-j|=n-1$(since the end is connect to the start), it's impossible since they are next to each other and both being occupied, so
+$$\E(X_iX_j) = 0$$
+\textit{Case 2. }When $|i-j|=2$ or $|i-j|=n-2$, we need at least 3 vacant seats otherwise it's impossible, so
+$$\E(X_iX_j) = \begin{cases}
+                \left. {n-5 \choose m-2} \middle/ {n \choose m}\right. & n\geq m+3\\
+                0 & o.w.\end{cases}$$
+\textit{Case 3. }When $2<|i-j|<n-2$, we need at least 4 vacant seats otherwise it's impossible, so
+$$\E(X_iX_j) = \begin{cases}
+                \left. {n-6 \choose m-2} \middle/ {n \choose m}\right. & n\geq m+4\\
+                0 & o.w.\end{cases}$$
+Now, we compute the variance for different range of $n-m$: \\\\
+When $n-m\geq 4$,
+\beq
+    \text{Var}(N) &= \E(N^2)-(\E(N))^2\\
+        &= \sum_{i=1}^n\E(X_i^2)+\sum_{i \neq j}^n\E(X_iX_j)-(\E(N))^2\\
+        &=\E(N)-(\E(N))^2+\sum_{\substack{|i-j|=2 \\ \text{ or }n-2}} \left. {n-5 \choose m-2} \middle/ {n \choose m}\right. + \sum_{\substack{2<|i-j|\\|i-j|<n-2}}\left. {n-6 \choose m-2} \middle/ {n \choose m}\right.\\
+        &=\E(N)-(\E(N))^2+2n\cdot \left. {n-5 \choose m-2} \middle/ {n \choose m}\right. + (n(n-1)-4n)\cdot\left. {n-6 \choose m-2} \middle/ {n \choose m}\right.\\
+        &= \left.{n-3\choose m-1} \middle/ {n\choose m}\right.- \left[{n-3\choose m-1} \middle/ {n\choose m}\right]^2+2n\cdot \left. {n-5 \choose m-2} \middle/ {n \choose m}\right.+ (n(n-1)-4n)\cdot\left. {n-6 \choose m-2} \middle/ {n \choose m}\right.
+\eeq 
+\\
+When $n-m = 3$, \textit{Case 3} is impossible, so
+\beq
+    \text{Var}(N) &= \E(N)-(\E(N))^2+\sum_{i \neq j}^n\E(X_iX_j)\\
+        &=\ \left.{n-3\choose m-1} \middle/ {n\choose m}\right.- \left[{n-3\choose m-1} \middle/ {n\choose m}\right]^2+\sum_{\substack{|i-j|=2 \\ \text{ or }n-2}} \left. {n-5 \choose m-2} \middle/ {n \choose m}\right.\\
+\eeq 
+\\
+When $n-m =2$, it is impossible to have more than one isolated seats, which means we won't have any nonzero $\E(X_iX_j),\ i\neq j$
+\beq
+    \text{Var}(N) &= \E(N)-(\E(N))^2\\
+        &=\ \left.{n-3\choose m-1} \middle/ {n\choose m}\right.- \left[{n-3\choose m-1} \middle/ {n\choose m}\right]^2
+\eeq 
+\end{document}

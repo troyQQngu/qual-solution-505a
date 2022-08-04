@@ -1,0 +1,162 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage[]{amsthm} %lets us use \begin{proof}
+\usepackage[]{amssymb} %gives us the character \varnothing
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\sol}{\\\\\textit{Solution. }}
+\def\beq#1\eeq{%
+    \begin{equation*}\begin{split}%
+      #1%  
+    \end{split}\end{equation*}%
+}
+
+\title{MATH 505a Fall 2016 Qual Solution Attempts}
+\author{Troy Tao}
+\date\today
+
+\begin{document}
+\maketitle 
+Contact \textcolor{blue}{yntao@usc.edu} if you think this document needs revision.
+\section*{Problem 1}
+You have a choice to roll a fair die either 100 times. For each of the following outcomes, state whether it is more likely with 100 rolls, or with 1000 rolls. Justify your answer, but you do not need to give a full formal proof.
+\subsection*{(a)}
+The number 1 shows on the die between 15\% and 20\% of the time.
+\color{blue}
+\sol $n=1000$. (not a proof) Let $X_i$ be the indicator function for the ith roll being 1. By the Weak Law of Large Numbers (WLLN),
+$$ \frac{1}{n}\sum_{i=1}^nX_i \rightarrow \E(X_i) = \frac{1}{6} \text{  in probability.} $$
+That is, for any $\epsilon >0$, 
+$$\lim_{n\rightarrow \infty} \prob(\frac{1}{6}-\epsilon <\frac{1}{n}\sum_{i=1}^n X_i<\frac{1}{6}+\epsilon) =1$$
+Notice that $15\%<\frac{1}{6}<20\%$. Therefore,
+$$\lim_{n\rightarrow \infty} \prob(15\% <\frac{1}{n}\sum_{i=1}^n X_i<20\%) =1$$
+In another word, we should expect that the above probability is larger (closer to 1) when $n$ larger.
+\color{black}
+\subsection*{(b)}
+The number showing is at most 3, at least half the time.
+\color{blue}
+\sol $n=100$. 
+\begin{proof} Let $X_i$ be the indicator function for the ith roll at most 3. Compute the probability for $2n$ rolls:
+\beq
+    \prob\left(\frac{1}{2n}\sum_{i=1}^{2n} X_i \geq \frac{1}{2}\right) &= \sum_{i=n}^{2n}{2n \choose i} \left(\frac{1}{2}\right)^{2n}\\
+        &= \frac{1}{2}\cdot 2 \sum_{i=n}^{2n} {2n \choose n}\left(\frac{1}{2}\right)^{2n}\\
+        &\stackrel{(*)}{=} \frac{1}{2}\left({2n \choose n}\left(\frac{1}{2}\right)^{2n}+\sum_{i=0}^{2n}{2n \choose i}\left(\frac{1}{2}\right)^{2n}\right)\\
+        &=\frac{1}{2} + \left(\frac{1}{2}\right)^{2n+1}{2n \choose n}
+\eeq 
+$(*)$ By the symmetry that ${n \choose m}={n \choose n-m}$.\\\\
+Compare the above probability between $2n$ and $2n+2$ notice that for the right term,
+\beq
+    \frac{{2n \choose n}(\frac{1}{2})^{2n+1}}{{2n+2 \choose n+1}(\frac{1}{2})^{2n+3}} &= \frac{4\cdot(n+1)^2}{(2n+1)(2n+2)}\\
+        &=\frac{4n^2+8n+4}{4n^2+6n+2}\\
+        &>1,\ \text{for } n>0
+\eeq 
+Therefore the probability is decreasing with $n$.
+\end{proof} 
+\color{black}
+\subsection*{(c)}
+The number showing is 2 or 5, at least half the time.
+\color{blue}
+\sol $n=100$. (not a proof) Let $X_i$ be the indicator function for ith roll being 2 or 5. By the WLLN,
+$$\frac{1}{n}\sum_{i=1}^nX_i \rightarrow \E(X_i) =\frac{1}{3},\ \text{ in probability.}$$
+Since $\frac{1}{2}>\frac{1}{3}$,
+$$\lim_{n\rightarrow \infty}\prob(\frac{1}{n}\sum_{i=1}^nX_i\geq \frac{1}{2})=0$$
+Therefore, we should expect that this probability is smaller when $n$ is larger.
+\color{black}
+\section*{Problem 2}
+let $X$ and $Y$ be independent exponential random variables with parameters $\lambda$ and $\mu$ (that is, $\E(X)=1/\lambda$ and $\E(Y)=1/\mu$), and let $Z=\min(X,Y)$.
+\subsection*{(a)}
+Show that $Z$ is independent of the event $X<Y$. In other words, show the event $Z\leq t$ is independent of $X<Y$ for all $t$.
+\color{blue}
+\begin{proof}
+\beq
+    \prob(Z\leq t\vert X<Y) &= \prob(X\leq t\vert X<Y)\\
+        &=\frac{\prob(X\leq t,X<Y)}{\prob(X<Y)}
+\eeq 
+\beq
+    \prob(X\leq t,X<Y) &= \int\prob(x\leq t,x<Y\vert X=x)f_X(x)dx\\
+        &\stackrel{(*)}{=} \int\mathbf{1}_{x\leq t}\cdot\prob(Y>x)f_X(x)dx\\
+        &=\int_0^t e^{-\mu x}\cdot \lambda e^{-\lambda x} dx\\
+        &=\frac{\lambda}{\lambda+\mu}(1-e^{-(\lambda+\mu)t})
+\eeq 
+$(*)$ By the independence of $X$ and $Y$.
+\beq
+    \prob(X<Y) &=\int\prob(X<y)f_Y(y)dy\\
+        &=\int_0^\infty(1-e^{-\lambda y})\cdot\mu e^{-\mu y}dy\\
+        &=\frac{\lambda}{\lambda+\mu }
+\eeq 
+According to what we computed above,
+\beq    
+    \prob(Z\leq t\vert X<Y) &=1-e^{-(\lambda+\mu )t}
+\eeq 
+\beq
+    \prob(Z\leq t) &= 1-\prob(Z>t)\\
+        &=1-\prob(Y>t)\prob(X>t)\\
+        &= 1-e^{-(\lambda+\mu)t }
+\eeq 
+\end{proof}
+\color{black}
+\subsection*{(b)}
+Find the distribution of $\max(X-Y,0)$.
+\color{blue}
+\sol For $t>0$
+\beq
+    \prob(\max(X-Y,0)\leq t) &=\prob(X-Y\leq t, X\geq Y)+\prob(0\leq t, X<Y)\\
+        &= \int_0^\infty\prob(y\leq X\leq y+t)\cdot\mu e^{-\mu y}dy+\prob(X<Y)\\
+        &=\int_0^\infty(e^{-\lambda y}-e^{-\lambda(y+t)})\mu e^{-\mu y} dy\\
+        &=\frac{\mu}{\mu+\lambda}(1-e^{-\lambda t})
+\eeq
+\color{black}
+\section*{Problem 3}
+Let $X_1,X_2,...$ be iid with characteristic function $\psi$. Let $N$ be independent of the $X_i$'s with $\prob(N=n)=2^{-n}$ for all $n\geq 1$. Let $Y=\sum_{i=1}^n X_i$. Find the characteristic function of $Y$.
+\color{blue}
+\sol 
+\beq 
+    \E(e^{itY})&=\E(e^{it\sum_j=1^NX_j})\\
+        &=\E(\prod_{j=1}^N\E(e^{itX_j}))\\
+        &=\E(\psi(t)^N)\\
+        &=\sum_{n=1}^\infty\psi(t)^n2^{-n}\\
+        &=\begin{cases}
+        \frac{\psi(t)}{2-\psi(t)}, & \vert \psi(t)/2\vert<1\\
+        \infty, & \text{otherwise.}
+        \end{cases}
+\eeq 
+\color{black}
+\section*{Problem 4}
+$n\geq 4$ men, among whom are Alfred, Bill, Charles and David, stand in a row. Assume that all possible orderings of the men are equally likely.
+\subsection*{(a)}
+Find the probability that Charles stands somewhere between Alfred and Bill. (Note this does not mean they are necessarily adjacent---there might be other people between Alfred and Bill.)
+\color{blue}
+\sol Let $A, B, C, D$ denote Alfred, Bill, Charles, and David, respectively. And let $C_{A,B}$ denotes the event that Charles is between A and B. Now, since all the orderings are equally likely, to find the desired probability, we only need to consider the ordering for $A$, $B$, and $C$. They are: $ABC$, $ACB$, $BAC$, $BCA$, $CAB$, $CBA$. So
+\beq
+    \prob(C_{A,B}) = \frac{1}{3}
+\eeq 
+\color{black}
+\subsection*{(b)}
+Find the probability that David stands somewhere between Alfred and Bill given that Charles stands somewhere between Alfred and Bill.
+\color{blue}
+\sol Again, we only need to consider the relative ordering of $A,B,C,D$. For the cases that $C,D$ are both between $A,B$: $ACDB,ADCB,BCDA,BDCA$
+\beq
+    \prob(D_{A,B}\vert C_{A,B}) &= \frac{\prob(D_{A,B}\cap C_{A,B})}{\prob(C_{A,B})}\\
+        &=\frac{\frac{4}{4!}}{\frac{1}{3}}\\
+        &=\frac{1}{2}
+\eeq     
+\color{black}
+\subsection*{(c)}
+Find the expected value and variance of the number of men out of $n$ who stand between Alfred and Bill. (Note Alfred and Bill themselves are not counted in this number.)
+\color{blue}
+\sol Let $X_i$ be the indicator function of ith person(not including $A$ and $B$) is between $A$ and $B$. Use the results from (a) and (b):
+\beq
+    \E(\sum_{i=1}^{n-2}X_i) &= \sum_{i=1}^{n-2}\E(X_i)\\
+        &=\sum_{i=1}^{n-2}\prob(X_i=1)\\
+        &=\frac{n-2}{3}
+\eeq 
+\beq
+    \text{Var}(\sum_{i=1}^{n-2}X_i) &= \E(\sum_{i=1}^{n-2}X_i)^2-(\E(\sum_{i=1}^{n-2}X_i))^2\\
+        &= \sum_{i=1}^{n-2}\E(X_i^2)+\sum{i\neq j}^{n-2}\E(X_iX_j)-\left(\frac{n-2}{3}\right)^2\\
+        &= \left(\frac{n-2}{3}\right)+\frac{1}{6}\cdot(n-2)(n-3)-\left(\frac{n-2}{3}\right)^2\\
+\eeq 
+\end{document}
